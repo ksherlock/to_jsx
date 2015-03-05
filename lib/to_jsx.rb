@@ -1,5 +1,8 @@
-require "html_to_jsx/version"
-require "html_to_jsx/base"
+require "to_jsx/version"
+require "to_jsx/base"
+require "to_jsx/target_inline"
+require "to_jsx/target_jsx"
+require "to_jsx/target_react"
 
 module ToJSX
 
