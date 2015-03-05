@@ -17,8 +17,14 @@ module ToJSX
 
 		def one_element(e)
 
-			rv = 'React.createElement('
-			rv <<  q(e.name) << ", "
+
+			# React.creatElement will be indented by parent.
+			rv = "React.createElement(\n"
+
+			@indent = @indent + 1
+			indent = " " * (@indent * 2)
+
+			rv <<  indent + q(e.name) << ",\n"
 
 			attr = {}
 
@@ -35,7 +41,7 @@ module ToJSX
 			attr = nil if attr.empty?
 
 			# JSON.generate doesn't work with null or strings.
-			rv << attr.to_json
+			rv << indent + attr.to_json
 
 			children = []
 			e.each { |child| 
@@ -46,11 +52,18 @@ module ToJSX
 			children.reject! {|x| x == nil }
 
 			unless children.empty?
-				rv << ", "
-				rv << children.join(", ")
+				rv << ",\n" + indent
+				rv << children.join(",\n" + indent)
 			end
 
-			rv << ")"
+			@indent -= 1
+			indent = " " * (@indent * 2)
+			rv << "\n" + indent + ")"
+
+
+			rv << ";\n" if @indent == 0
+
+			return rv
 		end
 
 		def one_comment(e)
