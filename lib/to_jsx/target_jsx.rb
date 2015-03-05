@@ -16,7 +16,7 @@ module ToJSX
 			tmp = style_to_hash(x)
 			rv = []
 			tmp.each{|k,v|
-				rv.push("#{k}=#{q(v)}")
+				rv.push("#{k}:#{q(v)}")
 			}
 
 			return "{{#{rv.join(', ')}}}"
@@ -57,7 +57,7 @@ module ToJSX
 
 		def one_text(e)
 			# need to escape '{' characters.
-			text = e.value
+			text = e.value.clone
 			text.gsub!(/([{}])/, '{ "\1" }')
 			return text
 		end

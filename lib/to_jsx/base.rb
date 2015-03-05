@@ -32,11 +32,14 @@ module ToJSX
 
 		def trim_ws(x)
 
+			return "" if x.nil?
+			x = x.clone
+			
 			# remove leading cr/lf (and any whitespace following)
-			x.gsub!(/^[\r\n][\r\n\t ]*/, '')
+			x.gsub!(/^[\r\n\t ]*[\r\n][\r\n\t ]*/, '')
 
-			# remove trailing cr/lf (and any whitespace preceeding)
-			x.gsub!(/^[\r\n\t ]*[\r\n]$/, '')
+			# remove trailing cr/lf (and any whitespace preceeding or following)
+			x.gsub!(/[\r\n\t ]*[\r\n][\r\n\t ]*$/, '')
 
 			# collapse any whitespace
 			x.gsub!(/[\r\n\t ]+/, ' ')
