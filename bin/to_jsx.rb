@@ -2,6 +2,7 @@
 
 require 'rexml/document'
 require 'optparse'
+
 require 'to_jsx'
 
 include REXML
@@ -45,13 +46,22 @@ if ARGV.length > 1
 end
 
 
-filename = ARGV.first
-filename = nil if filename == "-"
-infile = filename.nil? ? $stdin : File.new(filename, "r")
+infilename = ARGV.first
+infilename = nil if infilename == "-"
+infile = infilename.nil? ? $stdin : File.new(infilename, "r")
 
-filename = options[:output]
-filename = nil if filename == "-"
-outfile = filename.nil? ? $stdout : File.new(filename, "w")
+outfilename = options[:output]
+if infilename && !outfilename
+	ext = case options[:type]
+	when :jsx
+		"jsx"
+	else
+		"js"
+	end
+	outfilename = infilename + "." + ext
+end
+outfilename = nil if outfilename == "-"
+outfile = outfilename.nil? ? $stdout : File.new(outfilename, "w")
 
 
 doc = Document.new(infile)
