@@ -1,23 +1,24 @@
 #!/usr/bin/env ruby
 
 require 'rexml/document'
-include REXML
+require 'to_jsx'
 
-require 'html_to_jsx'
+include REXML
+include ToJSX
 
 
 file = File.new('../test.html')
 
 doc = Document.new(file)
 
-visitor = ToJSX::TargetJSX.new
+visitor = TargetJSX.new
 puts visitor.process(doc)
 
 
-visitor = ToJSX::TargetInline.new
+visitor = TargetInline.new
 puts visitor.process(doc)
 
-visitor = ToJSX::TargetReact.new
+visitor = TargetReact.new
 puts visitor.process(doc)
 
 exit 0

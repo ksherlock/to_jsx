@@ -8,7 +8,7 @@ module ToJSX
 		end
 
 		def q(x)
-			'"' + x.to_x + '"'
+			'"' + x.to_s + '"'
 		end
 
 		def style(x)
