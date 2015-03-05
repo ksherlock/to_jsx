@@ -1,3 +1,3 @@
-module HtmlToJsx
+module ToJSX
   VERSION = "0.1.0"
 end
