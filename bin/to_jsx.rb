@@ -9,7 +9,7 @@ include REXML
 include ToJSX
 
 
-options = { :type => :react}
+options = { :type => :react, :export => :none}
 
 op = OptionParser.new do |opts|
 	opts.banner = "Usage:  #{File.basename($PROGRAM_NAME)} [OPTIONS] FILE"
@@ -29,6 +29,27 @@ op = OptionParser.new do |opts|
 		"Specify output type (inline, react, jsx)") {|arg|
 		options[:type] = arg
 	}
+
+	opts.on("--id ID", String,
+		"Only export HTML element with specific ID") {|arg|
+		options[:xpath] = "*[@id='#{arg}']"
+	}
+
+	opts.on("--xpath XPATH", String,
+		"Only export first HTML element matching XPATH") {|arg|
+		options[:xpath] = arg
+	}
+
+	opts.on("-e", "--export METHOD", [:cjs, :es6, :none],
+		"Specify export method (cjs, es6, none") {|arg|
+		options[:export] = arg
+	}
+
+	opts.on("-c", "--class NAME", String,
+		"Specify React class name") {|arg|
+		options[:class] = arg
+	}
+
 end
 
 begin
@@ -66,7 +87,18 @@ outfile = outfilename.nil? ? $stdout : File.new(outfilename, "w")
 
 doc = Document.new(infile)
 
+root = nil
 
+if options[:xpath]
+	root = XPath.first(doc, options[:xpath])
+else
+	root = doc.first {|e| REXML::Element === e }
+end
+
+if root.nil?
+	puts "Unable to find root node"
+	exit(1)
+end
 
 target = case options[:type]
 when :jsx
@@ -77,7 +109,10 @@ when :react
 	TargetReact.new
 end
 
-outfile.puts target.process(doc)
+# add front-matter
+outfile.puts target.process(root)
+
+#add back matter
 
 exit 0
 

@@ -68,13 +68,7 @@ module ToJSX
 
 
 		def process(e)
-			child = case e
-			when REXML::Document
-				e.first
-			else
-				e
-			end
-			one_node(child)
+			one_node(e)
 		end
 
 		def one_text(e)
