@@ -1,8 +1,7 @@
 # ToJSX
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/to_jsx`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Convert HTML into JSX.  Why?  I don't know. Maybe if you have a component that's just HTML, it would be easier to edit it
+as HTML.
 
 ## Installation
 
